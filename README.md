@@ -1,20 +1,52 @@
-<<<<<<< HEAD
-# React + Vite
+# Inventaris SPBE
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Aplikasi web untuk membantu pengelolaan dan pencatatan inventaris barang dalam lingkungan Sistem Pemerintahan Berbasis Elektronik (SPBE).
 
-Currently, two official plugins are available:
+## Teknologi
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+* React.js
+* Vite
+* Tailwind CSS
+* Node.js
+* Express.js
+* PostgreSQL
 
-## React Compiler
+## Fitur
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* Manajemen data inventaris
+* Pencatatan barang
+* Pengelolaan kategori barang
+* Informasi detail barang
+* Pencarian dan pengelolaan data inventaris
 
-## Expanding the Oxlint configuration
+## Instalasi
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
-=======
-# inventaris-SPBE
->>>>>>> aa9ead4d5148905207424797737db4ce65edbde3
+Clone repository:
+
+```bash
+git clone https://github.com/hadiPU/inventaris-SPBE.git
+```
+
+Masuk ke folder project:
+
+```bash
+cd inventaris-SPBE
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Jalankan aplikasi:
+
+```bash
+npm run dev
+```
+
+Aplikasi kemudian dapat diakses melalui alamat yang ditampilkan oleh Vite pada terminal.
+
+## Status
+
+Project ini dikembangkan sebagai bagian dari kegiatan magang.
