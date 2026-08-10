@@ -14,9 +14,9 @@ Aplikasi web untuk membantu pengelolaan dan pencatatan inventaris barang dalam l
 ## Fitur
 
 * Manajemen data inventaris
-* Pencatatan barang
-* Pengelolaan kategori barang
-* Informasi detail barang
+* Pencatatan aplikasi
+* Pengelolaan kategori aplikasi
+* Informasi detail server
 * Pencarian dan pengelolaan data inventaris
 
 ## Instalasi

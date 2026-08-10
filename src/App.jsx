@@ -1,47 +1,58 @@
 import React, { useState } from "react";
 import NormalLoginPage from "./components/NormalLoginPage";
+import RakListPage from "./components/RakListPage";
 import ServerListPage from "./components/ServerListPage";
-import ScanAccessModal from "./components/ScanAccessModal";
-import Dashboard from "./components/Dashboard"; 
-import { DUMMY_SERVERS } from "./data/dummyData";
+import AppListPage from "./components/AppListPage";
+import AccessGateModal from "./components/AccessGateModal";
 
 export default function App() {
   const [user, setUser] = useState(null);
-  const [scanningServer, setScanningServer] = useState(null); 
-  const [openedServer, setOpenedServer] = useState(null); 
+  const [openedRak, setOpenedRak] = useState(null);
+  const [openedServer, setOpenedServer] = useState(null);
+  const [gate, setGate] = useState(null); // { type: 'rak' | 'server', item: {...} }
 
-  // Tahap 1: login
-  if (!user) {
-    return <NormalLoginPage onLoginSuccess={setUser} />;
+  if (!user) return <NormalLoginPage onLoginSuccess={setUser} />;
+
+  // Level 3: sudah buka server tertentu -> tampilkan aplikasi
+  if (openedServer) {
+    return <AppListPage server={openedServer} onBack={() => setOpenedServer(null)} />;
   }
 
-  // Tahap 3: berhasil scan QR+PIN salah satu server -> tampilkan isinya
-  if (openedServer) {
+  // Level 2: sudah buka rak tertentu -> tampilkan daftar server di rak itu
+  if (openedRak) {
     return (
-      <Dashboard
-        server={openedServer}
-        onLogout={() => setOpenedServer(null)} 
-      />
+      <>
+        <ServerListPage
+          rak={openedRak}
+          onBack={() => setOpenedRak(null)}
+          onOpenServer={(server) => setGate({ type: "server", item: server })}
+        />
+        {gate?.type === "server" && (
+          <AccessGateModal
+            target={gate.item}
+            targetLabel="Server"
+            onClose={() => setGate(null)}
+            onSuccess={(server) => { setGate(null); setOpenedServer(server); }}
+          />
+        )}
+      </>
     );
   }
 
-  // Tahap 2: sudah login -> tampilkan daftar server
+  // Level 1: baru login -> tampilkan daftar rak
   return (
     <>
-      <ServerListPage
-        servers={DUMMY_SERVERS}
+      <RakListPage
         user={user}
         onLogout={() => setUser(null)}
-        onScanServer={setScanningServer}
+        onOpenRak={(rak) => setGate({ type: "rak", item: rak })}
       />
-      {scanningServer && (
-        <ScanAccessModal
-          server={scanningServer}
-          onClose={() => setScanningServer(null)}
-          onSuccess={(server) => {
-            setScanningServer(null);
-            setOpenedServer(server);
-          }}
+      {gate?.type === "rak" && (
+        <AccessGateModal
+          target={gate.item}
+          targetLabel="Rak"
+          onClose={() => setGate(null)}
+          onSuccess={(rak) => { setGate(null); setOpenedRak(rak); }}
         />
       )}
     </>
