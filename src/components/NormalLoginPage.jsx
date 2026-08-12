@@ -1,20 +1,25 @@
 import React, { useState } from "react";
 import { LogIn, User, Lock } from "lucide-react";
-import { DUMMY_USER } from "../data/dummyData";
+import { api, setToken } from "../api";
 
 export default function NormalLoginPage({ onLoginSuccess }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    
-    if (username === DUMMY_USER.username && password === DUMMY_USER.password) {
-      onLoginSuccess({ username });
-    } else {
-      setError("Username atau password salah.");
+    setLoading(true);
+    try {
+      const data = await api.login(username, password);
+      setToken(data.token);
+      onLoginSuccess({ username: data.username });
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -34,13 +39,7 @@ export default function NormalLoginPage({ onLoginSuccess }) {
             <label className="text-xs text-brand-dim mb-1.5 block">Username</label>
             <div className="flex items-center gap-2 border border-brand-border rounded-lg px-3.5 py-3 bg-brand-bg">
               <User size={15} className="text-brand-dim" />
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="bg-transparent outline-none text-sm w-full text-brand-text"
-                placeholder="Masukkan username"
-              />
+              <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="bg-transparent outline-none text-sm w-full text-brand-text" placeholder="Masukkan username" />
             </div>
           </div>
 
@@ -48,25 +47,15 @@ export default function NormalLoginPage({ onLoginSuccess }) {
             <label className="text-xs text-brand-dim mb-1.5 block">Password</label>
             <div className="flex items-center gap-2 border border-brand-border rounded-lg px-3.5 py-3 bg-brand-bg">
               <Lock size={15} className="text-brand-dim" />
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="bg-transparent outline-none text-sm w-full text-brand-text"
-                placeholder="Masukkan password"
-              />
+              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="bg-transparent outline-none text-sm w-full text-brand-text" placeholder="Masukkan password" />
             </div>
           </div>
 
           {error && <p className="text-brand-red text-xs mb-3">{error}</p>}
 
-          <button type="submit" className="w-full py-3 rounded-lg bg-brand-accent text-white font-semibold text-sm cursor-pointer hover:opacity-90 transition">
-            Masuk
+          <button type="submit" disabled={loading} className="w-full py-3 rounded-lg bg-brand-accent text-white font-semibold text-sm cursor-pointer hover:opacity-90 transition disabled:opacity-50">
+            {loading ? "Memproses..." : "Masuk"}
           </button>
-
-          <p className="text-xs text-brand-dim text-center mt-4">
-            (Demo: admin / admin123)
-          </p>
         </form>
       </div>
     </div>
